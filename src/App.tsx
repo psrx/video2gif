@@ -151,7 +151,7 @@ function App() {
 
       {loading && (
         <div className="flex flex-col items-center justify-center fixed left-0 top-0 w-full h-full bg-black bg-opacity-80 backdrop-filter backdrop-blur text-white">
-          <img src="/pray.gif" />
+          <img src="/src/assets/pray.gif" />
           <p className="my-2">少女祈祷中...</p>
           <p className="">你可能想要进度条，但很遗憾并没有</p>
         </div>
