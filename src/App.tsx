@@ -3,6 +3,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Upload, InputNumber, Button } from "antd";
 import { createGif, getVideoTrack, highAccuracyTimer, video2Img } from "./util";
 import { flushSync } from "react-dom";
+import prayGif from "/src/assets/pray.gif";
 
 const { Dragger } = Upload;
 
@@ -151,7 +152,7 @@ function App() {
 
       {loading && (
         <div className="flex flex-col items-center justify-center fixed left-0 top-0 w-full h-full bg-black bg-opacity-80 backdrop-filter backdrop-blur text-white">
-          <img src="/src/assets/pray.gif" />
+          <img src={prayGif} />
           <p className="my-2">少女祈祷中...</p>
           <p className="">你可能想要进度条，但很遗憾并没有</p>
         </div>
