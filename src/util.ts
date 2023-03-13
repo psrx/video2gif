@@ -25,7 +25,6 @@ export const highAccuracyTimer = ({
   let rafId: number = -1;
   let n = 0;
   const f = (timestamp: number) => {
-    console.log(n, timestamp);
     if (timestamp - n >= time) {
       callback();
       n = timestamp;
