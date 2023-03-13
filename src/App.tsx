@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
 import { Upload, InputNumber, Button } from "antd";
 import { createGif, getVideoTrack, highAccuracyTimer, video2Img } from "./util";
+import { flushSync } from "react-dom";
 
 const { Dragger } = Upload;
 
@@ -13,8 +14,6 @@ function App() {
   const [quality, setQuality] = useState(0.1);
   const [imgSize, setImgSize] = useState(1);
   const [loading, setLoading] = useState(false);
-  const playSpeed = 2;
-
   const videoRef = useRef<HTMLVideoElement>(null);
   const cancelFn = useRef<() => void>();
   const frames = useRef<
@@ -25,16 +24,15 @@ function App() {
       | ImageData
     )[]
   >([]);
+  const playSpeed = 2;
 
   const initVideoData = async (file: File) => {
     setGifUrl("");
     const tarck = await getVideoTrack(file);
     const { movie_duration, movie_timescale, nb_samples } = tarck;
     const frame = ~~(nb_samples / (movie_duration / movie_timescale));
-    setFrameNumber(frame);
+    setFrameNumber(Math.max(15, frame));
   };
-
-  useEffect(() => {}, []);
 
   const startRecording = () => {
     setLoading(true);
@@ -72,7 +70,10 @@ function App() {
           customRequest={({ file }) => {
             URL.revokeObjectURL(videoUrl);
             const playUrl = URL.createObjectURL(file as File);
-            setVideoUrl(playUrl);
+            flushSync(() => {
+              setVideoUrl(playUrl);
+            });
+
             initVideoData(file as File);
           }}
         >
@@ -87,7 +88,7 @@ function App() {
           <InputNumber
             value={frameNumber}
             className="w-115px"
-            min={1}
+            min={15}
             max={120}
             addonAfter="FPS"
             onChange={(e) => setFrameNumber(e || 1)}
@@ -125,10 +126,9 @@ function App() {
         </Button>
       </header>
 
-      <div className="flex flex-1 overflow-hidden justify-center">
+      <div className="flex flex-1 overflow-hidden">
         {videoUrl && (
           <video
-            className="max-w-[50%] mr-auto"
             ref={videoRef}
             src={videoUrl}
             onEnded={async () => {
@@ -146,7 +146,7 @@ function App() {
           ></video>
         )}
 
-        {gifUrl && <img className="max-w-[50%]" src={gifUrl} />}
+        {gifUrl && <img src={gifUrl} />}
       </div>
 
       {loading && (
