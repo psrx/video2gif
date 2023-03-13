@@ -130,6 +130,7 @@ function App() {
       <div className="flex flex-1 overflow-hidden">
         {videoUrl && (
           <video
+            className="max-w-[50%]"
             ref={videoRef}
             src={videoUrl}
             onEnded={async () => {
@@ -147,16 +148,19 @@ function App() {
           ></video>
         )}
 
-        {gifUrl && <img src={gifUrl} />}
+        {gifUrl && <img className="max-w-[50%]" src={gifUrl} />}
       </div>
 
-      {loading && (
-        <div className="flex flex-col items-center justify-center fixed left-0 top-0 w-full h-full bg-black bg-opacity-80 backdrop-filter backdrop-blur text-white">
-          <img src={prayGif} />
-          <p className="my-2">少女祈祷中...</p>
-          <p className="">你可能想要进度条，但很遗憾并没有</p>
-        </div>
-      )}
+      <div
+        className="flex flex-col items-center justify-center fixed left-0 top-0 w-full h-full bg-black bg-opacity-80 backdrop-filter backdrop-blur text-white"
+        style={{
+          display: loading ? undefined : "none",
+        }}
+      >
+        <img src={prayGif} />
+        <p className="my-2">少女祈祷中...</p>
+        <p className="">你可能想要进度条，但很遗憾并没有</p>
+      </div>
     </div>
   );
 }
