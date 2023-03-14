@@ -20,7 +20,6 @@ export const highAccuracyTimer = ({
 }: {
   callback: () => void;
   time?: number;
-  maximum?: number;
 }) => {
   let rafId: number = -1;
   let n = 0;
@@ -36,7 +35,6 @@ export const highAccuracyTimer = ({
   return {
     start() {
       n = performance.now();
-      console.log(n);
       rafId = requestAnimationFrame(f);
     },
 
